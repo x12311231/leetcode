@@ -2,37 +2,66 @@ package a20230520;
 
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.Properties;
 
-//public class BTS {
-//}
-class BTS {
-    private int ans; // 二叉搜索树可以为空
+class BTS2 {
+    public int inf = (int) Math.pow(10, 4);
 
-    public int maxSumBST(TreeNode1 root) {
-        dfs(root);
-        return ans;
+    public int maxSumValue = -Integer.MAX_VALUE;
+    public class Bst {
+        boolean isGoodTree;
+        int sumValue;
+        int minValue;
+        int maxValue;
+        Bst(boolean isGoodTree, int sumValue, int minValue, int maxValue) {
+            this.isGoodTree = isGoodTree;
+            this.sumValue = sumValue;
+            this.minValue = minValue;
+            this.maxValue = maxValue;
+        }
     }
+    public int maxSumBST(TreeNode1 root) {
+        findBst(root);
+        return maxSumValue;
+    }
+    public Bst findBst(TreeNode1 root) {
+        if (root != null && root.val == -3) {
+            System.out.println();
+        }
+        // 统一边界值处理
+        if (root == null) {
+            return new Bst(true, 0, inf, -inf);
+        }
 
-    private int[] dfs(TreeNode1 node) {
-        if (node == null)
-            return new int[]{Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
-
-        int[] left = dfs(node.left); // 递归左子树
-        int[] right = dfs(node.right); // 递归右子树
-        int x = node.val;
-        if (x <= left[1] || x >= right[0]) // 不是二叉搜索树
-            return new int[]{Integer.MIN_VALUE, Integer.MAX_VALUE, 0};
-
-        int s = left[2] + right[2] + x; // 这棵子树的所有节点值之和
-        ans = Math.max(ans, s);
-
-        return new int[]{Math.min(left[0], x), Math.max(right[1], x), s};
+        Bst leftBst = findBst(root.left);
+        Bst rightBst = findBst(root.right);
+        if (leftBst.maxValue < root.val && root.val < rightBst.minValue && leftBst.isGoodTree && rightBst.isGoodTree) {
+            System.out.printf("-%d", root.val);
+            int sumValue = leftBst.sumValue + root.val + rightBst.sumValue;
+            maxSumValue = Math.max(sumValue, maxSumValue);
+            return new Bst(
+                    true,
+                    sumValue, //
+                    Math.min(leftBst.minValue, root.val), // 左边的总小于当前节点的值
+                    Math.max(rightBst.maxValue, root.val) // 右边的总大于当前节点值
+            );
+        }
+        System.out.printf("--%d", root.val);
+//        return new Bst(false, 0, 0, 0);
+        return new Bst(
+                false,
+                Math.max(leftBst.sumValue, rightBst.sumValue), // 从某次不符合条件开始，只需传递子树的值即可
+                Math.min(leftBst.minValue, Math.min(rightBst.minValue, root.val)), // 因为已经是false了，所以这个值对整体运行不影响, 所以记录为0也不影响
+                Math.max(rightBst.maxValue, Math.max(leftBst.maxValue, root.val)) //
+        );
     }
 
     public static void main(String[] args) throws IOException {
         int res;
-        BTS bts = new BTS();
+        BTS2 bts = new BTS2();
         Integer[] list = Resource1.get();
         TreeNode1 treeNode = (new TreeNode1()).init(Arrays.asList(list));
 
@@ -56,9 +85,3 @@ class BTS {
         System.out.println(res);
     }
 }
-
-
-//作者：endlesscheng
-//        链接：https://leetcode.cn/problems/maximum-sum-bst-in-binary-tree/solution/hou-xu-bian-li-pythonjavacgo-by-endlessc-gll3/
-//        来源：力扣（LeetCode）
-//        著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
