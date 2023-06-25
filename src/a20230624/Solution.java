@@ -37,21 +37,21 @@ class Solution {
         for (int[] member: members) {
             layout.add(layout(m, n, member));
             for (int i = 0; i < m * n; i++) {
-                for (int j = i; j < m * n; j++) {
-                    int[] seederCpy = new int[member.length];
-                    System.arraycopy(member, 0, seederCpy, 0, member.length);
+                for (int j = i + 1; j < m * n; j++) {
+                    int[] memberCpy = new int[member.length];
+                    System.arraycopy(member, 0, memberCpy, 0, member.length);
                     do {
-                        if (j + 1 >= m * n) {
+                        if (memberCpy[i] != memberCpy[j]) {
+                            int tmp = memberCpy[i];
+                            memberCpy[i] = memberCpy[j];
+                            memberCpy[j] = tmp;
+                            layout.add(layout(m, n, memberCpy));
                             break;
                         }
-                        if (seederCpy[i] != seederCpy[++j]) {
-                            int tmp = seederCpy[i];
-                            seederCpy[i] = seederCpy[j];
-                            seederCpy[j] = tmp;
+                        if (++j >= m * n) {
                             break;
                         }
-                    } while (seederCpy[i] == seederCpy[j]);
-                    layout.add(layout(m, n, seederCpy));
+                    } while (memberCpy[i] == memberCpy[j]);
                 }
             }
         }
@@ -101,20 +101,25 @@ class Solution {
     public static void main(String[] args) {
         Solution solution = new Solution();
         int ret;
-//        ret = solution.getMaxGridHappiness(2, 3, 1, 2);
-//        System.out.println(ret);
-//        assert ret == 240;
-//        ret = solution.getMaxGridHappiness(3, 1, 2, 1);
-//        System.out.println(ret);
-//        assert ret == 260;
-//        ret = solution.getMaxGridHappiness(2, 2, 4, 0);
-//        System.out.println(ret);
-//        assert ret == 240;
-//        ret = solution.getMaxGridHappiness(3, 1, 1, 3);
-//        System.out.println(ret);
-//        assert ret == 230;
+        ret = solution.getMaxGridHappiness(2, 3, 1, 2);
+        System.out.println(ret);
+        System.out.println(ret == 240);
+        assert ret == 240;
+        ret = solution.getMaxGridHappiness(3, 1, 2, 1);
+        System.out.println(ret);
+        System.out.println(ret == 260);
+        assert ret == 260;
+        ret = solution.getMaxGridHappiness(2, 2, 4, 0);
+        System.out.println(ret);
+        System.out.println(ret == 240);
+        assert ret == 240;
+        ret = solution.getMaxGridHappiness(3, 1, 1, 3);
+        System.out.println(ret);
+        System.out.println(ret == 230);
+        assert ret == 230;
         ret = solution.getMaxGridHappiness(3, 3, 3, 1);
         System.out.println(ret);
+        System.out.println(ret == 400);
         assert ret == 400;
     }
 }
