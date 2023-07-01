@@ -4,7 +4,8 @@ public class Test {
 
     public static void main(String[] args) {
 //        Solution solution = new Solution();
-        Solution1 solution = new Solution1();
+//        Solution1 solution = new Solution1();
+        Solution2 solution = new Solution2();
         int[] res;
         res = solution.twoSum(new int[]{3, 3}, 6);
         System.out.println(assertEqual(new int[]{0, 1}, res));
