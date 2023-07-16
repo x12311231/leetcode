@@ -5,8 +5,8 @@ import java.util.stream.Stream;
 
 public class Test {
     public static void main(String[] args) {
-//        s1(new Solution());
-        s1(new Solution1());
+        s1(new Solution());
+//        s1(new Solution1());
 //        testScope();
 //        testOverflowInt();
 //        testOverflowLong();

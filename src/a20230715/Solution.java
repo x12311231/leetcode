@@ -17,7 +17,7 @@ public class Solution implements C{
                         if (map.containsKey(key)) {
                             continue;
                         }
-                        if (nums[i] + nums[j] + nums[k] + nums[l] == target) {
+                        if ((long) nums[i] + nums[j] + nums[k] + nums[l] == target) {
                             map.put(key, true);
                             list.add(nums[i]);
                             list.add(nums[j]);
